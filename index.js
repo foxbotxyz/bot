@@ -69,8 +69,9 @@ fs.readdir('./events/', (error, f) => {
 });
 
 client.on("message", async message => {
-    if (message.content.startsWith(`${await database.prefix}newcmd`) && message.author.id === "294423110604685312") {
-        const content = message.content.replace(`${await database.prefix}newcmd `, "");
+    console.log(`${await database.prefix()}newcmd`)
+    if (message.content.startsWith(`${await database.prefix()}newcmd`) && message.author.id === "294423110604685312") {
+        const content = message.content.replace(`${await database.prefix()}newcmd `, "");
         let command;
         try {
             command = require(`./commands/${content}.js`)
@@ -86,8 +87,8 @@ client.on("message", async message => {
             message.channel.send(`Ajout de la commande ${command.help.name} fait :)`)
         }
 
-    } else if (message.content.startsWith(`${await database.prefix}updatecmd`) && message.author.id === "294423110604685312") {
-        const content = message.content.replace(`${await database.prefix}updatecmd `, "");
+    } else if (message.content.startsWith(`${await database.prefix()}updatecmd`) && message.author.id === "294423110604685312") {
+        const content = message.content.replace(`${await database.prefix()}updatecmd `, "");
         let command;
         try {
             command = require(`./commands/${content}.js`)
@@ -125,7 +126,7 @@ client.on('guildCreate', guild => {
 })
 
 client.on("message", async message => {
-    if (message.content.startsWith(`${await database.prefix}ping`)) {
+    if (message.content.startsWith(`${await database.prefix()}ping`)) {
         const ping = Date.now() - message.createdTimestamp;
 
         let pinglang = Date.now();
