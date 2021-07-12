@@ -52,9 +52,15 @@ client.commands = new Discord.Collection();
 fs.readdir('./commands/', (error, result) => {
     result.forEach((f) => {
         fs.readdir(`./commands/${f}`, (error, response) => {
-            response.forEach((a) => {
+            response.forEach(async (a) => {
                 let commande = require(`./commands/${f}/${a}`);
-                client.commands.set(commande.help.name, commande);
+                let temp;
+                if (typeof commande.help === "function") {
+                    temp = await commande.help("en-GB")
+                    temp = temp["name"]
+                }
+                else temp = commande.help.name
+                client.commands.set(temp, commande);
             })
         });
     })

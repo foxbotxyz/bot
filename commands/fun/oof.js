@@ -27,7 +27,7 @@ module.exports.run = async(client, interaction, member, guild) => {
 }
 
 module.exports.help = {
-    "name": ["oof"],
+    "name": "oof",
     "description": "OOF !",
     dev: true,
     "options": [

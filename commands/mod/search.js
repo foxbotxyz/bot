@@ -31,16 +31,18 @@ module.exports.run = async(client, interaction, member, guild) => {
 	} else helpful.updateInteraction(interaction["token"], {content: `**${await lang.getText("mod cantFind", usedLang)}**`}, client)
 };
 
-module.exports.help = {
-	"name": "search",
-	"description": "Search informations about a user",
-	"options": [
-		{
-			"name": "user",
-			"description": "Who do you want check ?",
-			"type": 6,
-			"required": true,
-		}
-	],
-	"default_permission": true,
+module.exports.help = async function(lname){
+	return {
+		"name": "search",
+		"description": await lang.getText("mod searchDesc", lname),
+		"options": [
+			{
+				"name": (await lang.getText("other user", lname)).toLowerCase(),
+				"description": await lang.getText("mod whoSearch", lname),
+				"type": 6,
+				"required": true,
+			}
+		],
+		"default_permission": true,
+	}
 };

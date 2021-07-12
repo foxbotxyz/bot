@@ -29,7 +29,7 @@ module.exports.run = async(client, interaction, member, guild) => {
 }
 
 module.exports.help = {
-    "name": ["sounds"],
+    "name": "sounds",
     "description": "Music !",
     "options": [
         {

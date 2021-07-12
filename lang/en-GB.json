@@ -10,10 +10,17 @@
     "receivePunish": "You,'ve got a new sanction on",
     "reason": "Reason",
     "punishment": "Punishment",
-    "kickUser": "You just kicked"
+    "kickUser": "You just kicked",
+    "kickDesc": "Kick a player from your server",
+    "whoKick": "Who do you want kick ?",
+    "indicReason": "Please indicate a reason",
+    "searchDesc": "Search informations about a user",
+    "whoSearch": "Who do you want search ?"
   },
   "other": {
-    "ping": "Your latency is"
+    "ping": "Your latency is",
+    "user": "User",
+    "reason": "Reason"
   },
   "admin": {
     "choose": "You have just chosen the language \uD83C\uDDEC\uD83C\uDDE7 English (en-GB)."

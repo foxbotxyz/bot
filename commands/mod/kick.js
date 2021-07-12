@@ -24,14 +24,14 @@ module.exports.run = async(client, interaction, member, guild) => {
 				embed.setColor(`#ff0000`);
 				embed.setTitle(`Mod | ${guild.name}`);
 				embed.setDescription(`${await lang.getText("mod kickUser", usedLang)} <@${user.id}> *(${user.id})*`)
-				embed.addField(`» ${await lang.getText("mod reason", usedLang)} :`, `- ${punish["reason"]}`);
+				embed.addField(`» ${await lang.getText("other reason", usedLang)} :`, `- ${punish["reason"]}`);
 				embed.setTimestamp();
 				await helpful.updateInteraction(interaction["token"], {embeds: [embed]}, client)
 				embed.setDescription(`${await lang.getText("mod receivePunish", usedLang)} ${guild.name}`);
 				embed.addField(`Action type :`, `- ${punish["type"]}`, true);
 				embed.addField(`${await lang.getText("mod punishment", usedLang)} ID :`, `- ${punish["id"]}`, true);
 				await user.send(embed);
-				//await user.kick(punish["reason"])
+				await user.kick(punish["reason"])
 				const connect = await database.connect();
 				await new Promise(async dbAction => {
 					const db = await connect.db(`punishments`);
@@ -65,22 +65,24 @@ module.exports.run = async(client, interaction, member, guild) => {
 	}
 };
 
-module.exports.help = {
-	"name": "kick",
-	"description": "Kick a player from your server",
-	"options": [
-		{
-			"name": "user",
-			"description": "Who do you want kick ?",
-			"type": 6,
-			"required": true,
-		},
-		{
-			"name": "reason",
-			"description": "Please indicate a reason",
-			"type": 3,
-			"required": true,
-		}
-	],
-	"default_permission": false,
+module.exports.help = async function(lname){
+	return {
+		"name": "kick",
+		"description": await lang.getText("mod kickDesc", lname),
+		"options": [
+			{
+				"name": (await lang.getText("other user", lname)).toLowerCase(),
+				"description": await lang.getText("mod whoKick", lname),
+				"type": 6,
+				"required": true,
+			},
+			{
+				"name": (await lang.getText("other reason", lname)).toLowerCase(),
+				"description": await lang.getText("mod indicReason", lname),
+				"type": 3,
+				"required": true,
+			}
+		],
+		"default_permission": false,
+	}
 };
