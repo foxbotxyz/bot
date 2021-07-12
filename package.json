@@ -1,0 +1,26 @@
+{
+	"name": "foxbot",
+	"version": "0.1.0",
+	"description": "FoxBot est un bot multifonction qui inclut : Modération, Reaction Role et bien plus !",
+	"main": "index.js",
+	"dependencies": {
+		"canvas": "^2.8.0",
+		"discord.js": "^12.5.3",
+		"mongodb": "^3.6.10",
+		"request": "^2.88.2",
+		"uniqid": "^5.3.0"
+	},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": ""
+	},
+	"author": "NefiteTifall & Noth",
+	"license": "ISC",
+	"bugs": {
+		"url": ""
+	},
+	"homepage": ""
+}

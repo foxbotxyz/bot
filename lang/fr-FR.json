@@ -1,0 +1,21 @@
+{
+  "name": "Français",
+  "mainName": "fr-FR",
+  "description": "Mettez FoxBot en fraçais (modifiable plus tard)",
+  "emoji": "\uD83C\uDDEB\uD83C\uDDF7",
+  "mod": {
+    "noPerm": "Vous n'avez pas la permission",
+    "cantFind": "Désolé, nous ne trouvons pas l'utilisateur ciblé.",
+    "userAbove": "Vous ne pouvez pas expulser un utilisateur ayant plus de pouvoir que moi.",
+    "receivePunish": "Vous avez une nouvelle sanction sur",
+    "reason": "Raison",
+    "punishment": "Sanction",
+    "kickUser": "Tu viens de kick"
+  },
+  "other": {
+    "ping": "Votre latence est de"
+  },
+  "admin": {
+    "choose": "Vous venez de choisir la langue \uD83C\uDDEB\uD83C\uDDF7 Français (fr-FR)."
+  }
+}

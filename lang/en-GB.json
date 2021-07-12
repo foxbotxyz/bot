@@ -1,0 +1,21 @@
+{
+  "name": "English",
+  "mainName": "en-GB",
+  "description": "Put FoxBot in English (editabled later)",
+  "emoji": "\uD83C\uDDEC\uD83C\uDDE7",
+  "mod": {
+    "noPerm": "Autorisation refusée, vous devez avoir l'autorisation",
+    "cantFind": "Sorry we can't find this user.",
+    "userAbove": "Y can't kick user above me",
+    "receivePunish": "You,'ve got a new sanction on",
+    "reason": "Reason",
+    "punishment": "Punishment",
+    "kickUser": "You just kicked"
+  },
+  "other": {
+    "ping": "Your latency is"
+  },
+  "admin": {
+    "choose": "You have just chosen the language \uD83C\uDDEC\uD83C\uDDE7 English (en-GB)."
+  }
+}
