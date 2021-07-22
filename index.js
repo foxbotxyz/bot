@@ -75,7 +75,6 @@ fs.readdir('./events/', (error, f) => {
 });
 
 client.on("message", async message => {
-    console.log(`${await database.prefix()}newcmd`)
     if (message.content.startsWith(`${await database.prefix()}newcmd`) && message.author.id === "294423110604685312") {
         const content = message.content.replace(`${await database.prefix()}newcmd `, "");
         let command;
@@ -105,7 +104,7 @@ client.on("message", async message => {
         if (command) {
             client.commands.set(command.help.name, command);
             console.log(`Ajout de la commande nommé ${command.help.name} en local`)
-            await client.api.applications(client.user.id).guilds("770724998993281074").commands.post({ data: command.help})
+            await client.api.applications(client.user.id).guilds(message.guild.id).commands.post({ data: command.help})
             message.channel.send(`Ajout de la commande ${command.help.name} fait :)`)
         }
     }
@@ -126,12 +125,91 @@ client.ws.on(`INTERACTION_CREATE`, async(interaction) => {
 client.on('guildCreate', guild => {
     database.connectDB(client, "verif message").then(connect => {
         new Promise(databaseConnect => {
-            const db = connect.db(guild.id);
+            const db = connect.db("permissions");
+
         })
     })
 })
 
+client.on("slashRefreshPermission", async guild => {
+    const actualCommand = await client.api.applications(client.user.id).guilds(guild.id).commands.get();
+    guild = await client.guilds.fetch(guild.id);
+    const connect = await database.connect();
+    const dbPerm = await new Promise(async dbAction => {
+        const db = await connect.db(`permissions`);
+        db.collection(guild.id).find().toArray(async (err, result) => {
+            const array = await new Promise(async array => {
+                let temp = {};
+                for (const [i, elem] of result.entries()) {
+                    temp[elem['name']] = elem['perm'];
+                    if (i+1 === result.length) array(temp);
+                }
+            })
+            dbAction(array)
+        })
+    })
+    let fArray = [];
+    await new Promise(async rsl => {
+        const everyone = await guild.roles.cache.find(r => r.name === "@everyone");
+        for (const [i, actCmd] of actualCommand.entries()) {
+            let array = await new Promise(async abc => {
+                let tArray = {"id": actCmd["id"], permissions: []} // Initialisation de la commande pour le bulk final
+                if (dbPerm[actCmd["name"]]) { // Si il est en BDD
+                    await new Promise(async pArray => {
+                        for (const [a, perm] of dbPerm[actCmd["name"]].entries()) { // Boucle les permissions présent en bdd
+                            if (isNaN(parseInt(perm))) {
+                                let roles = await guild.roles.cache.filter(r => r.permissions.has("KICK_MEMBERS")) // Fonctionne sous le cache doit donc être modifier pour être en temps réel
+                                roles = await roles.array();
+                                await new Promise(async d => {
+                                    for (let [b, role] of roles.entries()) { // Boucle de tout les rôles ayant la permissions demandé
+                                        console.log(role["name"])
+                                        tArray.permissions.push({
+                                            "id": role["id"],
+                                            "type": 1,
+                                            "permission": true
+                                        })
+                                        if (b+1 === roles.length) d();
+                                    }
+                                })
+                            } else {
+                                tArray.permissions.push({
+                                    "id": perm,
+                                    "type": 1,
+                                    "permission": true
+                                })
+                            }
+                            if (a+1 === dbPerm[actCmd["name"]].length) pArray();
+                        }
+                    })
+                    tArray.permissions.push({
+                        "id": everyone.id,
+                        "type": 1,
+                        "permission": false
+                    })
+                    abc(tArray)
+                } else {
+                    tArray.permissions.push({
+                        "id": everyone.id,
+                        "type": 1,
+                        "permission": true
+                    })
+                    abc(tArray)
+                }
+            })
+            fArray.push(array)
+            if (i+1 === actualCommand.length) rsl();
+        }
+    });
+    await client.api.applications(client.user.id).guilds(guild.id).commands.permissions.put({data: fArray});
+})
+
+
 client.on("message", async message => {
+    if (message.content.startsWith(`${await database.prefix()}dev`)) {
+        message.delete()
+        client.emit("slashRefreshPermission", message.guild)
+    }
+
     if (message.content.startsWith(`${await database.prefix()}ping`)) {
         const ping = Date.now() - message.createdTimestamp;
 

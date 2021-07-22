@@ -9,8 +9,8 @@ module.exports.run = async(client, interaction, member, guild) => {
 	let userid = interaction["data"]["options"][0].value;
 	const reason = interaction["data"]["options"][1].value;
 	await helpful.loadingInteraction(interaction, client)
+	const usedLang = await lang.getLang(guild.id)
 	if (member.hasPermission('KICK_MEMBERS')) {
-		const usedLang = await lang.getLang(guild.id)
 		let ping = Date.now();
 		let user = await guild.members.fetch(userid);
 		if (user) {
@@ -54,7 +54,7 @@ module.exports.run = async(client, interaction, member, guild) => {
 				let embed = new Discord.MessageEmbed()
 				embed.setTitle(`Mod | ${guild.name}`);
 				embed.setColor(`#ff0000`);
-				embed.setDescription(await lang.getText("mod userAbove", guild.id));
+				embed.setDescription(await lang.getText("mod userAbove", usedLang));
 				embed.setTimestamp();
 				await helpful.updateInteraction(interaction["token"], {embeds: [embed]}, client)
 			}
@@ -83,6 +83,6 @@ module.exports.help = async function(lname){
 				"required": true,
 			}
 		],
-		"default_permission": false,
+		"default_permission": true,
 	}
 };
