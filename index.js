@@ -158,7 +158,8 @@ client.on("slashRefreshPermission", async guild => {
                     await new Promise(async pArray => {
                         for (const [a, perm] of dbPerm[actCmd["name"]].entries()) { // Boucle les permissions présent en bdd
                             if (isNaN(parseInt(perm))) {
-                                let roles = await guild.roles.cache.filter(r => r.permissions.has("KICK_MEMBERS")) // Fonctionne sous le cache doit donc être modifier pour être en temps réel
+                            let roles = await guild.roles.fetch();
+                                roles = await roles.cache.filter(r => r.permissions.has(perm)) // Récupère tout les roles ayant la permissions nécessaire
                                 roles = await roles.array();
                                 await new Promise(async d => {
                                     for (let [b, role] of roles.entries()) { // Boucle de tout les rôles ayant la permissions demandé
@@ -197,6 +198,7 @@ client.on("slashRefreshPermission", async guild => {
                 }
             })
             fArray.push(array)
+            console.log("---------")
             if (i+1 === actualCommand.length) rsl();
         }
     });
